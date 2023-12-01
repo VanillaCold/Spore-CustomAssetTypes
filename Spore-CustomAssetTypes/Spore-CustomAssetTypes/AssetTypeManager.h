@@ -16,93 +16,19 @@ public:
 	~AssetTypeManager();
 
 	static PropertyListPtr GetAssetType(uint32_t id);
+	
+	static bool AssetTypeManager::HasAssetType(uint32_t identifier);
+	static const char16_t* GetName(uint32_t identifier);
+	static uint32_t AssetTypeManager::GetSourceType(uint32_t identifier);
+	static uint32_t AssetTypeManager::GetTypeEditor(uint32_t identifier);
+
 	static void AttachDetours();
 
 	int AddRef() override;
 	int Release() override;
 	void* Cast(uint32_t type) const override;
-	static bool AssetTypeManager::HasAssetType(uint32_t identifier);
-	static const char16_t* GetName(uint32_t identifier);
 
 private:
 	static hash_map<uint32_t, PropertyListPtr> mpTypeMap;
-
-	virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, void(ResourceKey& a))
-	{
-
-		void detoured(ResourceKey & imageKey)
-		{
-			if (this)
-			{
-				if (AssetTypeManager::HasAssetType((uint32_t)this->GetAssetSubtype()))
-				{
-					uint32_t ID = 0xA518147D;
-					if (App::Property::GetUInt32(AssetTypeManager::GetAssetType((uint32_t)this->GetAssetSubtype()).get(), id("assetTypeBackgroundID"), ID))
-					{
-						original_function(this, imageKey);
-						imageKey.instanceID = ID;
-						return;
-					}
-				}
-				else
-				{
-					return original_function(this, imageKey);
-				}
-
-			}
-			return original_function(this, imageKey);
-		}
-
-	};
-
-	static_detour(TypeNameDetour, const char16_t*(uint32_t))
-	{
-		const char16_t* detoured(uint32_t type)
-		{
-			if (AssetTypeManager::HasAssetType(type))
-			{
-				return GetName(type);
-			}
-			return original_function(type);
-		}
-	};
-
-	static_detour(TypeDetour, int(uint32_t)) //Detour what type the game things yours actually is.
-	{
-		//TODO: Make this data-driven. Like, 100% data-driven.
-		int detoured(uint32_t type)
-		{
-			uint32_t tType = type;
-			if (type == id("TestTEST"))
-			{
-				tType = id("VehicleMilitaryLand");
-			}
-			return original_function(tType);
-		}
-	};
-
-	virtual_detour(EditAllCreationsDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, bool())
-	{
-		bool detoured()
-		{
-			//Make it so that the game always allows creations to be edited.
-			original_function(this);
-			return true;
-		}
-	};
-
-	static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game puts your creation in.
-	{
-		//TODO: Make this entirely data-driven!
-		int detoured(uint32_t edID)
-		{
-			if (edID == id("TestTEST"))
-			{
-				return id("TestTEST");
-			}
-			return original_function(edID);
-		}
-	};
-
 	
 };
