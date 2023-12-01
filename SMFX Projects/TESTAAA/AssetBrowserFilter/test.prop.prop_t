@@ -1,0 +1,5 @@
+bool browserAllowSortByPublished false
+key browserFilterData TestTEST
+texts browserFilterName
+	"AAAAAAAAAAAA"
+end

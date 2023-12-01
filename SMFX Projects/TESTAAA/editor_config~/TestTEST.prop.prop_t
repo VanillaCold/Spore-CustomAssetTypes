@@ -1,0 +1,62 @@
+key parent editor_config~!MineralTemplate.prop
+string16 description "Vehicle Template"
+float ThumbnailLowering 0.4
+bool editorAllowAsymmetry true
+key editorBackgroundMusicPatch music_vehc_editor
+float editorBoundSize 6
+texts editorBudgetTooltip
+	(tooltips!0x064d2885) "Vehicle Budget (PLACEHOLDER)"
+end
+key editorBuyItemEffectID EDT_currency_vehicle_buyItem
+key editorCameraThumbnail EditorCameraVehicleThumbnail.prop
+key editorCameraUI EditorCameraVehicleUI.prop
+int32 editorComplexityLimit 300
+uint32 editorCurrencyChar 9873
+key editorCurrencyIcon ufotools~!ve_be_currency.png
+int32 editorDefaultInitialBudget 5000
+texts editorDefaultModelName
+	(VE!0x04d93065) "Vehicle Name (PLACEHOLDER)"
+end
+key editorDefaultPaintTheme ve_theme_default
+keys editorEnabledManipulators
+	0xF48AB41C
+	cSPEditorManipulationPinning
+	cSPEditorManipulationDeformHandle
+	cSPEditorManipulationRotationHandle
+end
+key editorEscrowEffectID EDT_currency_vehicle_escrow
+key editorLight VehicleEditor
+int32 editorMaxBudget 9999
+float editorMaxGeomScore 30
+float editorMaxHeight 10
+float editorMinHeight -10
+keys editorModelTypes
+	TestTEST
+	VehicleMilitaryLand
+end
+texts editorName
+	(VE!0x04d94893) "Vehicle (PLACEHOLDER)"
+end
+key editorPaintPalette palette_definition~!0x0000003C.prop
+key editorPaintSwatchModel vehicle_editorModel~!VehiclePaintSwatch.vcl
+key editorPartsPalette palette_definition~!0x0000003B.prop
+key editorRandomNameType kVehicle
+key editorSaveDirectory 0x011AC19B!0xFFFFFFFF
+key editorSaveExtension 0xFFFFFFFF.vcl
+key editorSellItemEffectID EDT_currency_vehicle_sellItem
+key editorSporepediaCanSwitchConfigID VLE_TemplateShopper_CanSwitch
+key editorSporepediaConfigID vle_Templateshopper
+bool editorSubtractPartsCostOnLoad true
+key editorSwatchBackgroundMusicPatch music_vehc_editor_shopping
+key editorSwatchCameraUI EditorCameraVehicleUI
+key editorTutorialPaintMode VLESporeGuidePaint
+key editorTutorialPartMode VLESporeGuidePart
+key editorTutorialPlayMode vlesporeguide
+bool editorUseShadows true
+bool editorUseSkin false
+bool editorUseSpine false
+bool editorUseSymmetry true
+uint32 editorViewableComplexityFlags 11
+key verbTrayCollection verbtrays!0x6E9227A0
+key verbTrayCollectionSporepediaLargeCard verbtrays!0xD61EA042
+key verbTrayCollectionSporepediaSmallCard verbtrays!0x62591C84
