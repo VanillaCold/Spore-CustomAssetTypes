@@ -19,6 +19,9 @@
     <ClInclude Include="stdafx.h">
       <Filter>Internal</Filter>
     </ClInclude>
+    <ClInclude Include="AssetTypeManager.h">
+      <Filter>Spore-CustomAssetTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -26,6 +29,9 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetTypeManager.cpp">
+      <Filter>Spore-CustomAssetTypes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
