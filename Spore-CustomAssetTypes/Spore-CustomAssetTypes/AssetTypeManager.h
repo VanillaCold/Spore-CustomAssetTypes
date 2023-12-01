@@ -22,6 +22,7 @@ public:
 	int Release() override;
 	void* Cast(uint32_t type) const override;
 	static bool AssetTypeManager::HasAssetType(uint32_t identifier);
+	static const char16_t* GetName(uint32_t identifier);
 
 private:
 	static hash_map<uint32_t, PropertyListPtr> mpTypeMap;
@@ -54,13 +55,13 @@ private:
 
 	};
 
-	static_detour(TypeNameDetour, wchar_t(uint32_t))
+	static_detour(TypeNameDetour, const char16_t*(uint32_t))
 	{
-		wchar_t detoured(uint32_t type)
+		const char16_t* detoured(uint32_t type)
 		{
-			if (type == id("TestTEST"))
+			if (AssetTypeManager::HasAssetType(type))
 			{
-				return wchar_t(u"TestTEST");
+				return GetName(type);
 			}
 			return original_function(type);
 		}

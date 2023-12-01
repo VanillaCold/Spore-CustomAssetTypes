@@ -1,6 +1,8 @@
 string8 name "TestTEST asset type"
 
-text assetTypeName "TestTEST"
+texts assetTypeName 
+	"TestTEST"
+end
 key editorToUse editor_config~!TestTEST
 key parentAssetType VehicleHarvester
 uint32 assetTypeBackgroundID 0xC0BDF311

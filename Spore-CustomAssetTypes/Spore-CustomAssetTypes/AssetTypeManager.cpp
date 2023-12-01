@@ -30,6 +30,16 @@ bool AssetTypeManager::HasAssetType(uint32_t identifier)
 	return false;
 }
 
+const char16_t* AssetTypeManager::GetName(uint32_t identifier)
+{
+	LocalizedString str;
+	PropertyListPtr propList;
+	PropManager.GetPropertyList(identifier, id("CustomAssetTypes"), propList);
+	App::Property::GetText(propList.get(), id("assetTypeName"), str);
+	
+	return str.GetText();
+}
+
 PropertyListPtr AssetTypeManager::GetAssetType(uint32_t identifier)
 {
 	if (mpTypeMap.find(identifier) != mpTypeMap.end())
