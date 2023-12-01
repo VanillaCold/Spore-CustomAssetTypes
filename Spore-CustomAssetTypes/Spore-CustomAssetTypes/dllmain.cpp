@@ -26,6 +26,27 @@ void Dispose()
 	// This method is called when the game is closing
 }
 
+virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, void(ResourceKey& a))
+{
+	void detoured(ResourceKey & a)
+	{
+		if (this)
+		{
+			uint32_t aid = this->mSubtype;
+			if (aid == id("TestTEST"))
+			{
+				original_function(this, a);
+				//a = ResourceKey(0xA518147D, TypeIDs::png, id("AssetBrowserGraphics"));
+				a.instanceID = 0xA518147D;
+				return;
+			}
+			return original_function(this, a);
+			//this->mSubtype = aid;
+		}
+		return original_function(this, a);
+	}
+
+};
 
 
 static_detour(TypeDetour, int(uint32_t)) //Detour what type the game things yours actually is.
@@ -73,6 +94,8 @@ void AttachDetours()
 	EditorEntryDetour::attach(Address(0x004333e0)); //TODO: Find the address for Disk Spore
 
 	TypeDetour::attach(Address(0x004bbda0)); //TODO: Find the address for Disk Spore
+
+	BackgroundImageDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
 
 	//and also just find the actual functions and class, so that it can be added to the SDK.
 	
