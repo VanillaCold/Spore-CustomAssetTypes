@@ -15,10 +15,10 @@ void Initialize()
 	//ManualBreakpoint();
 
 
-	SporeDebugPrint("%x", (uint32_t)GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
-	SporeDebugPrint("%x", (uint32_t)(-0x4328c177));
+	//SporeDebugPrint("%x", (uint32_t)GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
+	//SporeDebugPrint("%x", (uint32_t)(-0x4328c177));
 	
-	App::ConsolePrintF("%x",baseAddress);
+	//App::ConsolePrintF("%x",baseAddress);
 }
 
 void Dispose()
@@ -28,8 +28,9 @@ void Dispose()
 
 
 
-static_detour(TypeDetour, int(uint32_t))
+static_detour(TypeDetour, int(uint32_t)) //Detour what type the game things yours actually is.
 {
+	//TODO: Make this data-driven. Like, 100% data-driven.
 	int detoured(uint32_t type)
 	{
 		uint32_t tType = type;
@@ -45,13 +46,15 @@ virtual_detour(EditAllCreationsDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia:
 {
 	bool detoured()
 	{
+		//Make it so that the game always allows creations to be edited.
 		original_function(this);
 		return true;
 	}
 };
 
-static_detour(EditorEntryDetour, int(uint32_t))
+static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game puts your creation in.
 {
+	//TODO: Make this entirely data-driven!
 	int detoured(uint32_t edID)
 	{
 		if (edID == id("TestTEST"))
@@ -67,10 +70,13 @@ void AttachDetours()
 	///Note: RIGHT NOW, ADDRESSES ARE EXACT, rather than choosing for different executables.
 	///This means that this mod won't work with Disk Spore for now.
 
-	EditorEntryDetour::attach(Address(0x004333e0)); 
+	EditorEntryDetour::attach(Address(0x004333e0)); //TODO: Find the address for Disk Spore
 
-	TypeDetour::attach(Address(0x004bbda0));
+	TypeDetour::attach(Address(0x004bbda0)); //TODO: Find the address for Disk Spore
+
+	//and also just find the actual functions and class, so that it can be added to the SDK.
 	
+
 	//Makes every type editable. Useful if a type is a flora derivative.
 	EditAllCreationsDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsEditable));
 }
