@@ -3,6 +3,6 @@ string8 name "TestTEST asset type"
 texts assetTypeName 
 	"TestTEST"
 end
-key editorToUse editor_config~!BuildingHouseAA
+key editorToUse editor_config~!TestTEST
 key parentAssetType BuildingHouse
 uint32 assetTypeBackgroundID 0xC0BDF311

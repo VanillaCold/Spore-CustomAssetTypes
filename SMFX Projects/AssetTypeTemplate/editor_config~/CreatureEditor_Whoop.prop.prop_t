@@ -1,0 +1,18 @@
+key parent editor_config~!CreatureEditorSetup.prop
+string16 description "Creature Editor In Space Game"
+key editorBackgroundModel ce_background_UFO
+key editorBackgroundMusicPatch music_space_accessories
+key editorCameraUI EditorCameraCreatureUI_Extra_Large.prop
+float editorDaisRadius 1.75
+uint32 editorDaisType hash(glass)
+key editorLight CreatureEditor_in_UFO
+key editorPaintModeLight CreatureEditorPaintMode_UFO.prop
+key editorPlayModeEntryEffectID animations~
+key editorPlayModeExitEffectID animations~
+key editorSkyBoxEffect editor_creature_editor_in_UFO_effects
+key editorSwatchBackgroundModel animations~
+key editorSwatchPedestalModel animations~
+keys editorModelTypes
+	CreatureTest
+	creature
+end
