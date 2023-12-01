@@ -1,0 +1,6 @@
+string8 name "TestTEST asset type"
+
+text assetTypeName "TestTEST"
+key editorToUse editor_config~!TestTEST
+key parentAssetType VehicleHarvester
+uint32 assetTypeBackgroundID 0xC0BDF311

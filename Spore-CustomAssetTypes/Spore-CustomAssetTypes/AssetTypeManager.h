@@ -15,34 +15,41 @@ public:
 	AssetTypeManager();
 	~AssetTypeManager();
 
+	static PropertyListPtr GetAssetType(uint32_t id);
+	static void AttachDetours();
+
 	int AddRef() override;
 	int Release() override;
 	void* Cast(uint32_t type) const override;
+	static bool AssetTypeManager::HasAssetType(uint32_t identifier);
 
-	static void AttachDetours();
-
-
-
-
+private:
+	static hash_map<uint32_t, PropertyListPtr> mpTypeMap;
 
 	virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, void(ResourceKey& a))
 	{
-		void detoured(ResourceKey & a)
+
+		void detoured(ResourceKey & imageKey)
 		{
 			if (this)
 			{
-				uint32_t aid = this->mSubtype;
-				if (aid == id("TestTEST"))
+				if (AssetTypeManager::HasAssetType((uint32_t)this->GetAssetSubtype()))
 				{
-					original_function(this, a);
-					//a = ResourceKey(0xA518147D, TypeIDs::png, id("AssetBrowserGraphics"));
-					a.instanceID = 0xA518147D;
-					return;
+					uint32_t ID = 0xA518147D;
+					if (App::Property::GetUInt32(AssetTypeManager::GetAssetType((uint32_t)this->GetAssetSubtype()).get(), id("assetTypeBackgroundID"), ID))
+					{
+						original_function(this, imageKey);
+						imageKey.instanceID = ID;
+						return;
+					}
 				}
-				return original_function(this, a);
-				//this->mSubtype = aid;
+				else
+				{
+					return original_function(this, imageKey);
+				}
+
 			}
-			return original_function(this, a);
+			return original_function(this, imageKey);
 		}
 
 	};

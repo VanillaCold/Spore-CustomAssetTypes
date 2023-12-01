@@ -20,6 +20,7 @@ void Initialize()
 	//SporeDebugPrint("%x", (uint32_t)(-0x4328c177));
 	
 	//App::ConsolePrintF("%x",baseAddress);
+	new AssetTypeManager();
 }
 
 void Dispose()
