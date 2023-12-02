@@ -60,6 +60,20 @@ uint32_t AssetTypeManager::GetTypeEditor(uint32_t identifier)
 	return editorID.instanceID;
 }
 
+bool AssetTypeManager::GetIsSharable(uint32_t identifier)
+{
+	bool canShare;
+	PropertyListPtr propList;
+	PropManager.GetPropertyList(identifier, id("CustomAssetTypes"), propList);
+	
+	if (App::Property::GetBool(propList.get(), id("assetTypeSharable"), canShare))
+	{
+		return canShare;
+	}
+	
+	return false;
+}
+
 PropertyListPtr AssetTypeManager::GetAssetType(uint32_t identifier)
 {
 	if (mpTypeMap.find(identifier) != mpTypeMap.end())
@@ -72,6 +86,20 @@ PropertyListPtr AssetTypeManager::GetAssetType(uint32_t identifier)
 
 
 
+virtual_detour(IsSharableDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, bool())
+{
+	bool detoured()
+	{
+		if (this)
+		{
+			if (AssetTypeManager::HasAssetType((uint32_t)this->GetAssetSubtype()))
+			{
+				return AssetTypeManager::GetIsSharable( (uint32_t)this->GetAssetSubtype() );
+			}
+		}
+		return original_function(this);
+	}
+};
 
 virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, void(ResourceKey& a))
 {
@@ -165,6 +193,8 @@ void AssetTypeManager::AttachDetours()
 	//and also just find the actual functions and class, so that it can be added to the SDK.
 
 	TypeNameDetour::attach(Address(0x004bba50));
+
+	IsSharableDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsShareable));
 
 
 	//Makes every type editable. Useful if a type is a flora derivative.

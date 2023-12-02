@@ -21,6 +21,7 @@ public:
 	static const char16_t* GetName(uint32_t identifier);
 	static uint32_t AssetTypeManager::GetSourceType(uint32_t identifier);
 	static uint32_t AssetTypeManager::GetTypeEditor(uint32_t identifier);
+	static bool AssetTypeManager::GetIsSharable(uint32_t identifier);
 
 	static void AttachDetours();
 
