@@ -1,0 +1,15 @@
+string8 name "TestTEST asset type"
+
+#The name of the asset type as appears in-editor. Can be localised.
+texts assetTypeName 
+	"TestTEST"
+end
+
+#The editor to use when trying to edit from the Sporepedia.
+key editorToUse editor_config~!TestTEST
+#The "parent" type - this is the type that Spore will treat yours as.
+key parentAssetType BuildingHouse
+#The background for your asset type in the editor.
+uint32 assetTypeBackgroundID 0xC0BDF311
+#Whether or not the Share button will be enabled for your type.
+bool assetTypeSharable false
