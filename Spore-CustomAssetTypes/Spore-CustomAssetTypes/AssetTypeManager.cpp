@@ -177,8 +177,12 @@ static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game pu
 	}
 };
 
-member_detour(TestDetour, Editors::cEditor, void(float,float))
+member_detour(UpdateDetour, Editors::cEditor, void(float,float))
 {
+
+	///TODO: Clean up code and add comments
+	///Also, add custom icon for these creations.
+
 	void detoured(float delta1, float delta2)
 	{
 		if (AssetTypeManager::GetAssetType(mpEditorModel->mModelType))
@@ -204,6 +208,7 @@ member_detour(TestDetour, Editors::cEditor, void(float,float))
 		}
 		return original_function(this,delta1,delta2);
 	}
+
 };
 
 
@@ -225,7 +230,7 @@ void AssetTypeManager::AttachDetours()
 
 	IsSharableDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsShareable));
 
-	TestDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
+	UpdateDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
 
 	//FUN_00576140
 	//FUN_00407280
