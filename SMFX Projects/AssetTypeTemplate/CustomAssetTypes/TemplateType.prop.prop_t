@@ -7,8 +7,13 @@ end
 
 #The editor to use when trying to edit from the Sporepedia.
 key editorToUse editor_config~!TestTEST
+
+#The editor and asset type to take hardcoded verbtrays from
+key editorParentEditor editor_config~!VehicleTemplate
+uint32 editorPretendType hash(VehicleMilitaryLand)
+
 #The "parent" type - this is the type that Spore will treat yours as.
-key parentAssetType BuildingHouse
+key parentAssetType VehicleMilitaryLand
 #The background for your asset type in the editor.
 uint32 assetTypeBackgroundID 0xC0BDF311
 #Whether or not the Share button will be enabled for your type.

@@ -167,7 +167,6 @@ virtual_detour(EditAllCreationsDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia:
 
 static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game puts your creation in.
 {
-	//TODO: Make this entirely data-driven!
 	int detoured(uint32_t edID)
 	{
 		if (AssetTypeManager::HasAssetType(edID))
@@ -177,6 +176,36 @@ static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game pu
 		return original_function(edID);
 	}
 };
+
+member_detour(TestDetour, Editors::cEditor, void(float,float))
+{
+	void detoured(float delta1, float delta2)
+	{
+		if (AssetTypeManager::GetAssetType(mpEditorModel->mModelType))
+		{
+			auto test = mEditorName;
+			auto currentType = mpEditorModel->mModelType;
+
+			uint32_t b;
+			App::Property::GetUInt32(AssetTypeManager::GetAssetType(currentType).get(), id("editorPretendType"), b);
+
+			mpEditorModel->mModelType = b;
+			
+			ResourceKey a;
+			App::Property::GetKey(AssetTypeManager::GetAssetType(currentType).get(), id("editorParentEditor"), a);
+
+			mEditorName = a.instanceID;//CALL(Address(0x004333e0), uint32_t, Args(int), Args(mpEditorModel->mModelType));
+			original_function(this,delta1,delta2);
+			
+			mEditorName = test;
+			mpEditorModel->mModelType = currentType;
+			
+			return;
+		}
+		return original_function(this,delta1,delta2);
+	}
+};
+
 
 
 void AssetTypeManager::AttachDetours()
@@ -196,6 +225,10 @@ void AssetTypeManager::AttachDetours()
 
 	IsSharableDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsShareable));
 
+	TestDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
+
+	//FUN_00576140
+	//FUN_00407280
 
 	//Makes every type editable. Useful if a type is a flora derivative.
 	EditAllCreationsDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsEditable));

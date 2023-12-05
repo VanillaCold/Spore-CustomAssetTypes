@@ -31,7 +31,7 @@ float editorMaxGeomScore 30
 float editorMaxHeight 10
 float editorMinHeight -10
 keys editorModelTypes
-	TestTEST
+	TemplateType
 	VehicleMilitaryLand
 end
 texts editorName
@@ -57,6 +57,9 @@ bool editorUseSkin false
 bool editorUseSpine false
 bool editorUseSymmetry true
 uint32 editorViewableComplexityFlags 11
-key verbTrayCollection verbtrays!0x6E9227A0
-key verbTrayCollectionSporepediaLargeCard verbtrays!0xD61EA042
-key verbTrayCollectionSporepediaSmallCard verbtrays!0x62591C84
+
+key editorStatsFile MilitaryVehicleEditorStats
+key verbTrayCollection verbtrays!0xF5C8BC4D
+key verbTrayCollectionSporepediaLargeCard verbtrays!0xF5C8BC4D
+key verbTrayCollectionSporepediaSmallCard verbtrays!0x622D61AF
+#key verbTrayCollectionSporepediaSmallCard verbtrays!0x62591C84
