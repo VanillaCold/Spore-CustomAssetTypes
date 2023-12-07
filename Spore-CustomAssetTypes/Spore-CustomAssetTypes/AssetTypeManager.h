@@ -29,6 +29,8 @@ public:
 	int Release() override;
 	void* Cast(uint32_t type) const override;
 
+	static uint32_t ActiveType;
+
 private:
 	static hash_map<uint32_t, PropertyListPtr> mpTypeMap;
 	

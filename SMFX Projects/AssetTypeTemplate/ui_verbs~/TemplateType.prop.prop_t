@@ -1,0 +1,9 @@
+key parent ui_verbs~!vehicle_VehicleTypeTemplate
+texts creatureAbilityDescription
+	"why did I do this"
+end
+texts creatureAbilityName
+	"Stupidity"
+end
+key verbIconImageID stats_cityhall
+key verbIconTrayOverrideImageID stats_cityhall

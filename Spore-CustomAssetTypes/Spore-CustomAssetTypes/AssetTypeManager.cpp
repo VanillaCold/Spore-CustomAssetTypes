@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "AssetTypeManager.h"
+#include <Spore\Hash.h>
+#include <Spore/GeneralAllocator.h>
 
 
 AssetTypeManager::AssetTypeManager()
@@ -176,6 +178,7 @@ static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game pu
 		return original_function(edID);
 	}
 };
+uint32_t AssetTypeManager::ActiveType;
 
 member_detour(UpdateDetour, Editors::cEditor, void(float,float))
 {
@@ -189,6 +192,7 @@ member_detour(UpdateDetour, Editors::cEditor, void(float,float))
 		{
 			auto test = mEditorName;
 			auto currentType = mpEditorModel->mModelType;
+			AssetTypeManager::ActiveType = currentType;
 
 			uint32_t b;
 			App::Property::GetUInt32(AssetTypeManager::GetAssetType(currentType).get(), id("editorPretendType"), b);
@@ -204,14 +208,47 @@ member_detour(UpdateDetour, Editors::cEditor, void(float,float))
 			mEditorName = test;
 			mpEditorModel->mModelType = currentType;
 			
+			AssetTypeManager::ActiveType = 0;
+
 			return;
 		}
+		AssetTypeManager::ActiveType = 0;
 		return original_function(this,delta1,delta2);
 	}
 
 };
 
+//Currently non-functional, so don't compile when compiling as Debug.
+#ifdef DEBUG
+static_detour(TestDetour, void(int*, int))
+{
+	void detoured(int* unk, int assetTypeID)
+	{
+		if (AssetTypeManager::ActiveType != 0)
+		{
+			PropertyListPtr propList;
+			PropManager.GetPropertyList(AssetTypeManager::ActiveType, 0x01B68DB4, propList);
 
+			ResourceKey b = propList->GetResourceKey();
+
+			PropertyListPtr otherPropList;
+			PropManager.GetPropertyList(id("vehicle_militaryland"), 0x01B68DB4, otherPropList);
+			ResourceKey a = otherPropList->GetResourceKey();
+
+			otherPropList->SetResourceKey(ResourceKey(0,0,0));//SetResourceKey(ResourceKey(, TypeIDs::prop,0));
+			propList->SetResourceKey(a);
+
+			original_function(unk, id("VehicleMilitaryLand"));
+			
+			propList->SetResourceKey(b);
+			otherPropList->SetResourceKey(a);
+
+			
+		}
+		return original_function(unk,assetTypeID);
+	}
+};
+#endif // (DEBUG)
 
 void AssetTypeManager::AttachDetours()
 {
@@ -231,6 +268,8 @@ void AssetTypeManager::AttachDetours()
 	IsSharableDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsShareable));
 
 	UpdateDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
+
+	//TestDetour::attach(Address(0x04e7a00));
 
 	//FUN_00576140
 	//FUN_00407280

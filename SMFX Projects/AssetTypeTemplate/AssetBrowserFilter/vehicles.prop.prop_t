@@ -1,0 +1,11 @@
+keys browserFilterChildrenFilters
+	land
+	Sea
+	air
+	ufo
+	TemplateType
+end
+key browserFilterMakeNewEditor VehicleColonyLand
+texts browserFilterName
+	(sporepedia!0x00020019) "Vehicles"
+end
