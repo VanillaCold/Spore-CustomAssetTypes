@@ -3,6 +3,8 @@
 #include <Spore\Hash.h>
 #include <Spore/GeneralAllocator.h>
 
+#include <Spore/App/cPropManager.h>
+
 
 AssetTypeManager::AssetTypeManager()
 {
@@ -15,7 +17,7 @@ AssetTypeManager::AssetTypeManager()
 		PropManager.GetPropertyList(ID, id("CustomAssetTypes"), propList);
 		mpTypeMap.emplace(ID, propList);
 	}
-
+	ActiveType = 0;
 }
 
 
@@ -250,12 +252,55 @@ static_detour(TestDetour, void(int*, int))
 };
 #endif // (DEBUG)
 
+//#ifdef DEBUG
+member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, PropertyListPtr&))
+{
+	bool detoured(uint32_t instanceID, uint32_t groupID, PropertyListPtr& output)
+	{
+		if (AssetTypeManager::ActiveType != 0 && instanceID == id("vehicle_militaryland"))
+		{
+			uint32_t type = AssetTypeManager::ActiveType;
+			bool canUse = false;
+			if (App::Property::GetBool(AssetTypeManager::GetAssetType(type).get(), id("useCustomVerbtray"), canUse) && canUse)
+			{
+				instanceID = type;
+			}
+		}
+		return original_function(this, instanceID, groupID, output);
+	}
+};
+//#endif
+
+static_detour(ParameterDetour,void(int*, uint32_t))
+{
+	void detoured(int* a, uint32_t b)
+	{
+		original_function(a,b);
+		if (AssetTypeManager::HasAssetType(b))
+		{
+			uint32_t ID;
+			if (App::Property::GetUInt32(AssetTypeManager::GetAssetType(b).get(), id("assetTypeBackgroundID"), ID))
+			{
+				*a = ID;
+				return;
+			}
+			//
+		}
+		//ModAPI::Log("%b", z);
+	}
+
+};
+
 void AssetTypeManager::AttachDetours()
 {
+	ParameterDetour::attach(Address(0x0065c440));//0x0c9ee90));//0x004f3e00));
 	///Note: RIGHT NOW, ADDRESSES ARE EXACT, rather than choosing for different executables.
 	///This means that this mod won't work with Disk Spore for now.
+	
+	PropManagerDetour::attach(GetAddress(App::cPropManager, GetPropertyList));
 
 	EditorEntryDetour::attach(Address(0x004333e0)); //TODO: Find the address for Disk Spore
+
 
 	TypeDetour::attach(Address(0x004bbda0)); //TODO: Find the address for Disk Spore
 

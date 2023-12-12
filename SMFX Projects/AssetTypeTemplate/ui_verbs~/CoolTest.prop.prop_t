@@ -1,0 +1,9 @@
+key parent ui_verbs~!vehicle_VehicleTypeTemplate
+texts creatureAbilityName
+	"Beat 'o Burden"
+end
+texts creatureAbilityDescription
+	"A cool creature that's domesticated but in a way it doesn't like as much."
+end
+key verbIconImageID stats_omni_icon
+key verbIconTrayOverrideImageID stats_omni_icon
