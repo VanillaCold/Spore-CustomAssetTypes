@@ -11,7 +11,8 @@ key editorToUse editor_config~!TestTEST
 #The editor and asset type to take hardcoded verbtrays from
 key editorParentEditor editor_config~!VehicleTemplate
 uint32 editorPretendType hash(VehicleMilitaryLand)
-#Custom verbtray, currently only works with VehicleMilitaryLand as pretend type.
+#Custom verbtray. The override verbtray is the one used by the pretend type.
+uint32 editorOverrideVerbtray hash(vehicle_militaryland)
 bool useCustomVerbtray true
 
 #The "parent" type - this is the type that Spore will treat yours as.

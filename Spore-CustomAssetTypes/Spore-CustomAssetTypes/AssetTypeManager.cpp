@@ -257,13 +257,19 @@ member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, Pro
 {
 	bool detoured(uint32_t instanceID, uint32_t groupID, PropertyListPtr& output)
 	{
-		if (AssetTypeManager::ActiveType != 0 && instanceID == id("vehicle_militaryland"))
+		if (AssetTypeManager::ActiveType != 0 && groupID == 0x01B68DB4)
 		{
 			uint32_t type = AssetTypeManager::ActiveType;
-			bool canUse = false;
-			if (App::Property::GetBool(AssetTypeManager::GetAssetType(type).get(), id("useCustomVerbtray"), canUse) && canUse)
+			PropertyListPtr propList = AssetTypeManager::GetAssetType(type);
+			uint32_t overrideID;
+
+			if (App::Property::GetUInt32(propList.get(), id("editorOverrideVerbtray"), overrideID) && instanceID == overrideID)
 			{
-				instanceID = type;
+				bool canUse = false;
+				if (App::Property::GetBool(AssetTypeManager::GetAssetType(type).get(), id("useCustomVerbtray"), canUse) && canUse)
+				{
+					instanceID = type;
+				}
 			}
 		}
 		return original_function(this, instanceID, groupID, output);
@@ -271,7 +277,7 @@ member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, Pro
 };
 //#endif
 
-static_detour(ParameterDetour,void(int*, uint32_t))
+/*static_detour(ParameterDetour, void(int*, uint32_t))
 {
 	void detoured(int* a, uint32_t b)
 	{
@@ -289,11 +295,11 @@ static_detour(ParameterDetour,void(int*, uint32_t))
 		//ModAPI::Log("%b", z);
 	}
 
-};
+};*/
 
 void AssetTypeManager::AttachDetours()
 {
-	ParameterDetour::attach(Address(0x0065c440));//0x0c9ee90));//0x004f3e00));
+	//ParameterDetour::attach(Address(0x0065c440));//0x0c9ee90));//0x004f3e00));
 	///Note: RIGHT NOW, ADDRESSES ARE EXACT, rather than choosing for different executables.
 	///This means that this mod won't work with Disk Spore for now.
 	
