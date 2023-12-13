@@ -267,7 +267,7 @@ void AssetTypeManager::AttachDetours()
 {	
 	PropManagerDetour::attach(GetAddress(App::cPropManager, GetPropertyList));
 
-	//For each of these, the first address is March2017 address, and the latter is the Disk address.
+	//For each of these, the first address is disk address, and the latter is the March2017 address.
 	EditorEntryDetour::attach(ModAPI::ChooseAddress(0x00433010, 0x004333e0));
 
 	TypeNameDetour::attach(ModAPI::ChooseAddress(0x004badc0, 0x004bba50));
