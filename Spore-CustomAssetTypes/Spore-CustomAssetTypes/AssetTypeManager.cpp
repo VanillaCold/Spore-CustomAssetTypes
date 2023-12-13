@@ -220,39 +220,6 @@ member_detour(UpdateDetour, Editors::cEditor, void(float,float))
 
 };
 
-//Currently non-functional, so don't compile when compiling as Debug.
-#ifdef DEBUG
-static_detour(TestDetour, void(int*, int))
-{
-	void detoured(int* unk, int assetTypeID)
-	{
-		if (AssetTypeManager::ActiveType != 0)
-		{
-			PropertyListPtr propList;
-			PropManager.GetPropertyList(AssetTypeManager::ActiveType, 0x01B68DB4, propList);
-
-			ResourceKey b = propList->GetResourceKey();
-
-			PropertyListPtr otherPropList;
-			PropManager.GetPropertyList(id("vehicle_militaryland"), 0x01B68DB4, otherPropList);
-			ResourceKey a = otherPropList->GetResourceKey();
-
-			otherPropList->SetResourceKey(ResourceKey(0,0,0));//SetResourceKey(ResourceKey(, TypeIDs::prop,0));
-			propList->SetResourceKey(a);
-
-			original_function(unk, id("VehicleMilitaryLand"));
-			
-			propList->SetResourceKey(b);
-			otherPropList->SetResourceKey(a);
-
-			
-		}
-		return original_function(unk,assetTypeID);
-	}
-};
-#endif // (DEBUG)
-
-//#ifdef DEBUG
 member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, PropertyListPtr&))
 {
 	bool detoured(uint32_t instanceID, uint32_t groupID, PropertyListPtr& output)
@@ -275,7 +242,6 @@ member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, Pro
 		return original_function(this, instanceID, groupID, output);
 	}
 };
-//#endif
 
 /*static_detour(ParameterDetour, void(int*, uint32_t))
 {
@@ -298,23 +264,17 @@ member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, Pro
 };*/
 
 void AssetTypeManager::AttachDetours()
-{
-	//ParameterDetour::attach(Address(0x0065c440));//0x0c9ee90));//0x004f3e00));
-	///Note: RIGHT NOW, ADDRESSES ARE EXACT, rather than choosing for different executables.
-	///This means that this mod won't work with Disk Spore for now.
-	
+{	
 	PropManagerDetour::attach(GetAddress(App::cPropManager, GetPropertyList));
 
-	EditorEntryDetour::attach(Address(0x004333e0)); //TODO: Find the address for Disk Spore
+	//For each of these, the first address is March2017 address, and the latter is the Disk address.
+	EditorEntryDetour::attach(Address(0x004333e0, 0x00433010)); 
 
-
-	TypeDetour::attach(Address(0x004bbda0)); //TODO: Find the address for Disk Spore
+	TypeNameDetour::attach(Address(0x004bba50, 0x004badc0));
+	
+	TypeDetour::attach(Address(0x004bbda0, 0x004bb110)); 
 
 	BackgroundImageDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
-
-	//and also just find the actual functions and class, so that it can be added to the SDK.
-
-	TypeNameDetour::attach(Address(0x004bba50));
 
 	IsSharableDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsShareable));
 
