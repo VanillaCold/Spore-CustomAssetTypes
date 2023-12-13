@@ -268,11 +268,11 @@ void AssetTypeManager::AttachDetours()
 	PropManagerDetour::attach(GetAddress(App::cPropManager, GetPropertyList));
 
 	//For each of these, the first address is disk address, and the latter is the March2017 address.
-	EditorEntryDetour::attach(ModAPI::ChooseAddress(Address(0x00433010), Address(0x004333e0)));
+	EditorEntryDetour::attach(Address(ModAPI::ChooseAddress(0x00433010, 0x004333e0)));
 
-	TypeNameDetour::attach(ModAPI::ChooseAddress(Address(0x004badc0), Address(0x004bba50)));
+	TypeNameDetour::attach(Address(ModAPI::ChooseAddress(0x004badc0, 0x004bba50)));
 	
-	TypeDetour::attach(ModAPI::ChooseAddress(Address(0x004bb110), Address(0x004bbda0)));
+	TypeDetour::attach(Address(ModAPI::ChooseAddress(0x004bb110, 0x004bbda0)));
 
 	BackgroundImageDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
 
