@@ -32,6 +32,7 @@
 *.app
 /Spore-CustomAssetTypes/.vs/Spore-CustomAssetTypes/v16
 /Spore-CustomAssetTypes/Spore-CustomAssetTypes/Debug
+/Spore-CustomAssetTypes/Spore-CustomAssetTypes/Release
 /SMFX Projects/AssetTypeTemplate/editor_config~/CoolTest.prop.prop_t
 /SMFX Projects/AssetTypeTemplate/CustomAssetTypes/CoolTest.prop.prop_t
 /SMFX Projects/AssetTypeTemplate/creature_rigblock~/ce_movement_bird_04.prop.prop_t
