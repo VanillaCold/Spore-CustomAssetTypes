@@ -105,10 +105,10 @@ virtual_detour(IsSharableDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAsse
 	}
 };
 
-virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, void(ResourceKey&))
+virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::IAssetData, ResourceKey*(ResourceKey* key))
 {
 
-	void detoured(ResourceKey & imageKey)
+	ResourceKey* detoured(ResourceKey * key)
 	{
 		if (this)
 		{
@@ -117,21 +117,21 @@ virtual_detour(BackgroundImageDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia::
 				uint32_t ID = 0xA518147D;
 				if (App::Property::GetUInt32(AssetTypeManager::GetAssetType((uint32_t)this->GetAssetSubtype()).get(), id("assetTypeBackgroundID"), ID))
 				{ 
-					ResourceKey ret = ResourceKey(0,0,0);
-					ret.instanceID = ID;
-					ret.groupID = 0xCA14DE92;
-					ret.typeID = TypeIDs::png;
-					imageKey = ret;
-					return;
+					ResourceKey* ret = new ResourceKey(0,0,0);
+					ret->instanceID = ID;
+					ret->groupID = 0xCA14DE92;
+					ret->typeID = TypeIDs::png;
+					key = ret;
+					return key;
 				}
 			}
 			else
 			{
-				return original_function(this, imageKey);
+				return original_function(this,key);
 			}
 
 		}
-		return original_function(this, imageKey);
+		return original_function(this,key);
 	}
 
 };
