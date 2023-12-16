@@ -18,7 +18,7 @@ bool useCustomVerbtray true
 #The "parent" type - this is the type that Spore will treat yours as.
 key parentAssetType VehicleMilitaryLand
 
-#The background for your asset type in the editor.
+#The background for your asset type in the Sporepedia.
 uint32 assetTypeBackgroundID 0xC0BDF311
 #Whether or not the Share button will be enabled for your type.
 bool assetTypeSharable false
