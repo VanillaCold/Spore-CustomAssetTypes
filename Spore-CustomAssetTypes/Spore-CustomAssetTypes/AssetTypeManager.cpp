@@ -172,9 +172,9 @@ virtual_detour(EditAllCreationsDetour, Sporepedia::cSPAssetDataOTDB, Sporepedia:
 	}
 };
 
-static_detour(EditorEntryDetour, int(uint32_t)) //Detour what editor the game puts your creation in.
+static_detour(EditorEntryDetour, uint32_t(uint32_t)) //Detour what editor the game puts your creation in.
 {
-	int detoured(uint32_t edID)
+	uint32_t detoured(uint32_t edID)
 	{
 		if (AssetTypeManager::HasAssetType(edID))
 		{
@@ -289,7 +289,8 @@ void AssetTypeManager::AttachDetours()
 	//FUN_00407280
 
 	//Makes every type editable. Useful if a type is a flora derivative.
-	EditAllCreationsDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsEditable));
+	//Currently disabled - it causes a crash with flora, ironically enough.
+	//EditAllCreationsDetour::attach(GetAddress(Sporepedia::cSPAssetDataOTDB, IsEditable));
 }
 
 
