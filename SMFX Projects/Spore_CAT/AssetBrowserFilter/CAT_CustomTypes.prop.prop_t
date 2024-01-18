@@ -1,4 +1,17 @@
-key browserFilterButtonAtlasedIconID 0xFFFFFFFF.Creatures
+#key browserFilterButtonAtlasedIconID 0xFFFFFFFF.Creatures
+
+keys browserFilterButtonGraphic
+	AssetBrowserGraphics!0x24A322B8.png #normal
+	AssetBrowserGraphics!0x24A322B9.png #disabled
+	AssetBrowserGraphics!0x24A322BB.png #hovered
+	AssetBrowserGraphics!GearSelected.png #being clicked
+	AssetBrowserGraphics!0x24A322BA.png #selected
+	AssetBrowserGraphics!0x24A322B9.png #disabled again
+	AssetBrowserGraphics!0x24A322BD.png #clicked and selected?
+	AssetBrowserGraphics!GearSelected.png #not sure
+	AssetBrowserGraphics!0x24A322B9.png #disabled again?
+end
+
 keys browserFilterChildrenFilters
 end
 texts browserFilterName
