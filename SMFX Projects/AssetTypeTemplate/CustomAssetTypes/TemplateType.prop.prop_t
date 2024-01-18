@@ -22,3 +22,8 @@ key parentAssetType VehicleMilitaryLand
 uint32 assetTypeBackgroundID 0xC0BDF311
 #Whether or not the Share button will be enabled for your type.
 bool assetTypeSharable false
+
+#Semi-optional. Will add your asset type to the	Custom Types category.
+#It should correspond with the name of the asset browser filter that uses this type.
+#For instance, with TemplateType, the file AssetBrowserFilter!TemplateType.prop corresponds to this asset type.
+uint32 assetTypeSporepediaFilterID hash(TemplateType)

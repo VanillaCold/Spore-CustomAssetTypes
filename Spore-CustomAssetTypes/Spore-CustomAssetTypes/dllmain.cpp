@@ -6,20 +6,35 @@
 
 void Initialize()
 {
-	// This method is executed when the game starts, before the user interface is shown
-	// Here you can do things such as:
-	//  - Add new cheats
-	//  - Add new simulator classes
-	//  - Add new game modes
-	//  - Add new space tools
-	//  - Change materials
-	//ManualBreakpoint();
+	vector<uint32_t> IDs = { id("Home"), id("editable"), id("UserCreated"), id("UserPollinated"), 0x976CCB9A};
+
+	for (int i = 0; i < IDs.size(); i++)
+	{
+		PropertyListPtr propList;
+		if (PropManager.GetPropertyList(IDs[i], id("AssetBrowserFilter"), propList))
+		{
+			//CAT_CustomTypes
+			size_t count;
+			ResourceKey* key;
+			App::Property::GetArrayKey(propList.get(), 0x7435A2D3, count, key);
+
+			ResourceKey* keyArray = new ResourceKey[count + 1]{};
+			for (int j = 0; j < count; j++)
+			{
+				keyArray[j] = key[j];
+			}
+			keyArray[count] = ResourceKey(id("CAT_CustomTypes"), 0, 0);
+
+			App::Property* prop;
+			propList->GetProperty(0x7435A2D3, prop);
+			prop->SetArrayKey(keyArray,count+1);
+
+			//delete [] keyArray;
+		}
+	}
+	//Home
 
 
-	//SporeDebugPrint("%x", (uint32_t)GetAddress(Sporepedia::cSPAssetDataOTDB, GetBackgroundImageKey));
-	//SporeDebugPrint("%x", (uint32_t)(-0x4328c177));
-	
-	//App::ConsolePrintF("%x",baseAddress);
 	new AssetTypeManager();
 }
 

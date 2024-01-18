@@ -1,0 +1,6 @@
+key browserFilterButtonAtlasedIconID 0xFFFFFFFF.Creatures
+keys browserFilterChildrenFilters
+end
+texts browserFilterName
+	(CreateAType!0x01) "Creatures"
+end
