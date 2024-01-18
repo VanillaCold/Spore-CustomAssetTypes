@@ -26,8 +26,22 @@ void Initialize()
 			keyArray[count] = ResourceKey(id("CAT_CustomTypes"), 0, 0);
 
 			App::Property* prop;
+
+		
 			propList->GetProperty(0x7435A2D3, prop);
 			prop->SetArrayKey(keyArray,count+1);
+
+			bool ownsMemory = (prop->mnFlags & 0x20) != 0x20;
+			if (!ownsMemory)
+			{
+				prop->mnFlags = static_cast<short>((prop->mnFlags & ~0x20) | 0x4 | 0x10);
+			}
+			else
+			{
+				delete [] key;
+			}
+
+
 
 			//delete [] keyArray;
 		}

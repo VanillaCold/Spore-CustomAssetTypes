@@ -11,6 +11,7 @@ AssetTypeManager::AssetTypeManager()
 	mpTypeMap = hash_map<uint32_t, PropertyListPtr>();
 	vector<uint32_t> result;
 	PropManager.GetPropertyListIDs(id("CustomAssetTypes"), result);
+
 	for each (uint32_t ID in result)
 	{
 		PropertyListPtr propList;
