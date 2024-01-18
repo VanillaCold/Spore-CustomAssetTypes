@@ -6,18 +6,65 @@
 #include <Spore/App/cPropManager.h>
 
 
+void AssetTypeManager::AssignTypes(ResourceKey* resourceKeys, size_t arraySize)
+{
+
+	PropertyListPtr propList;
+	if (PropManager.GetPropertyList(id("CAT_CustomTypes"), id("AssetBrowserFilter"), propList))
+	{
+		//CAT_CustomTypes
+		size_t count;
+		ResourceKey* key;
+		App::Property::GetArrayKey(propList.get(), 0x7435A2D3, count, key);
+		App::Property* prop;
+
+		propList->GetProperty(0x7435A2D3, prop);
+		prop->SetArrayKey(resourceKeys, arraySize);
+
+		bool ownsMemory = (prop->mnFlags & 0x20) != 0x20;
+		if (!ownsMemory)
+		{
+			prop->mnFlags = static_cast<short>((prop->mnFlags & ~0x20) | 0x4 | 0x10);
+		}
+		else
+		{
+			delete[] key;
+		}
+	}
+}
+
 AssetTypeManager::AssetTypeManager()
 {
 	mpTypeMap = hash_map<uint32_t, PropertyListPtr>();
 	vector<uint32_t> result;
 	PropManager.GetPropertyListIDs(id("CustomAssetTypes"), result);
 
+	vector<uint32_t> filterIDs;
+
 	for each (uint32_t ID in result)
 	{
 		PropertyListPtr propList;
 		PropManager.GetPropertyList(ID, id("CustomAssetTypes"), propList);
 		mpTypeMap.emplace(ID, propList);
+
+		uint32_t typeFilterID;
+		if (App::Property::GetUInt32(propList.get(), id("assetTypeSporepediaFilterID"), typeFilterID))
+		{
+			filterIDs.push_back(typeFilterID);
+		}
 	}
+
+	size_t filterSize = 0;
+	ResourceKey* filters = new ResourceKey[filterIDs.size()]{};
+
+	for(int i = 0; i < filterIDs.size(); i++)
+	{
+		filters[i] = ResourceKey(filterIDs[i], 0, 0);
+		filterSize++;
+	}
+
+	AssignTypes(filters, filterSize);
+
 	ActiveType = 0;
 }
 

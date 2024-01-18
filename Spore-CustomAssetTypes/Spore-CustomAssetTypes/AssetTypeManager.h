@@ -9,6 +9,10 @@ class AssetTypeManager
 	: public Object
 	, public DefaultRefCounted
 {
+private:
+
+	void AssetTypeManager::AssignTypes(ResourceKey* resourceKeys, size_t arraySize);
+
 public:
 	static const uint32_t TYPE = id("AssetTypeManager");
 	
@@ -22,6 +26,7 @@ public:
 	static uint32_t AssetTypeManager::GetSourceType(uint32_t identifier);
 	static uint32_t AssetTypeManager::GetTypeEditor(uint32_t identifier);
 	static bool AssetTypeManager::GetIsSharable(uint32_t identifier);
+
 
 	static void AttachDetours();
 

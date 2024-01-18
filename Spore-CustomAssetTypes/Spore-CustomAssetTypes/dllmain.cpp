@@ -40,10 +40,6 @@ void Initialize()
 			{
 				delete [] key;
 			}
-
-
-
-			//delete [] keyArray;
 		}
 	}
 	//Home
