@@ -6,39 +6,50 @@
 
 void Initialize()
 {
-	vector<uint32_t> IDs = { id("Home"), id("editable"), id("UserCreated"), id("UserPollinated"), 0x976CCB9A};
+	vector<uint32_t> IDs{};
+	if (PropManager.HasPropertyList(id("EnableCategoryEverywhere"), id("CAT-Settings")))
+	{
+		PropManager.GetPropertyListIDs(id("AssetBrowserFilter"), IDs);
+	}
+	else
+	{
+		IDs = { id("Home"), id("editable"), id("UserCreated"), id("UserPollinated"), 0x976CCB9A };
+	}
+	//
 
 	for (int i = 0; i < IDs.size(); i++)
 	{
 		PropertyListPtr propList;
-		if (PropManager.GetPropertyList(IDs[i], id("AssetBrowserFilter"), propList))
+		if (PropManager.GetPropertyList(IDs[i], id("AssetBrowserFilter"), propList) && IDs[i] != id("CAT_CustomTypes"))
 		{
 			//CAT_CustomTypes
 			size_t count;
 			ResourceKey* key;
-			App::Property::GetArrayKey(propList.get(), 0x7435A2D3, count, key);
-
-			ResourceKey* keyArray = new ResourceKey[count + 1]{};
-			for (int j = 0; j < count; j++)
+			if (App::Property::GetArrayKey(propList.get(), 0x7435A2D3, count, key) )
 			{
-				keyArray[j] = key[j];
-			}
-			keyArray[count] = ResourceKey(id("CAT_CustomTypes"), 0, 0);
 
-			App::Property* prop;
+				ResourceKey* keyArray = new ResourceKey[count + 1]{};
+					for (int j = 0; j < count; j++)
+					{
+						keyArray[j] = key[j];
+					}
+				keyArray[count] = ResourceKey(id("CAT_CustomTypes"), 0, 0);
 
-		
-			propList->GetProperty(0x7435A2D3, prop);
-			prop->SetArrayKey(keyArray,count+1);
+					App::Property* prop;
 
-			bool ownsMemory = (prop->mnFlags & 0x20) != 0x20;
-			if (!ownsMemory)
-			{
-				prop->mnFlags = static_cast<short>((prop->mnFlags & ~0x20) | 0x4 | 0x10);
-			}
-			else
-			{
-				delete [] key;
+
+					propList->GetProperty(0x7435A2D3, prop);
+				prop->SetArrayKey(keyArray, count + 1);
+
+				bool ownsMemory = (prop->mnFlags & 0x20) != 0x20;
+				if (!ownsMemory)
+				{
+					prop->mnFlags = static_cast<short>((prop->mnFlags & ~0x20) | 0x4 | 0x10);
+				}
+				else
+				{
+					delete[] key;
+				}
 			}
 		}
 	}

@@ -199,6 +199,7 @@ static_detour(TypeNameDetour, const char16_t* (uint32_t))
 static_detour(TypeDetour, int(uint32_t)) //Detour what type the game things yours actually is.
 {
 	//TODO: Make this data-driven. Like, 100% data-driven.
+	//It returns the file-type, so CRT, FLR, BLD, etc.
 	int detoured(uint32_t type)
 	{
 		uint32_t tType = type;
@@ -294,6 +295,18 @@ member_detour(PropManagerDetour, App::cPropManager, bool(uint32_t, uint32_t, Pro
 	}
 };
 
+static_detour(TestDetour, bool(int, char))
+{
+	bool detoured(int param_1_00, char param_1)
+	{
+		bool a = original_function(param_1_00, param_1);
+		if (a == false)
+		{
+			return original_function(CALL(Address(ModAPI::ChooseAddress(0x004bb110, 0x004bbda0)), int, Args(uint32_t), Args(param_1_00)),param_1);
+		}
+		return a;
+	}
+};
 /*static_detour(ParameterDetour, void(int*, uint32_t))
 {
 	void detoured(int* a, uint32_t b)
@@ -331,7 +344,52 @@ void AssetTypeManager::AttachDetours()
 
 	UpdateDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
 
+	TestDetour::attach(Address(0x004bc360));
+
+	//FUN_004bc1b0 is odd, with FUN_004bc260 being its direct inverse.
+	//FUN_004bc360 also similar. same with FUN_004bc3d0.
+	//...and FUN_004bc410...
+
+	//FUN_004bc450 seems to look out for outfitted creatures.
+
+	//FUN_004bc5c0 does something related to the file extensions. dunno what.
+
+	//FUN_004bc740 is silly, it just returns 0x4fff05d3.
+
+	//FUN_004bc750 also is related to file extensions. also includes BEM and CREATUREDATA. does something with an array.
+
+	//FUN_004bc7d0 yet again seems to do something with file extensions.
+
+	//FUN_004bc840 is more interesting, seemingly having something to do with the editor. and the file extension, via FUN_004bc360.
+
+	//FUN_004bd190 contains a lot of data for creations. something to possibly look into.
+
+	//FUN_004bdd90 seems relevant?
+
+	//FUN_004bdf00 is related to vertebra - converting the AAA version into the creature version.
+
+	//FUN_004f2230 possibly useful?
+
+	//FUN_004f2d60 is certainly getting beyond the scope. it checks for stuff like a part having the ball connector n stuff.
+
+	//UndefinedFunction_004f3285 is I don't even know.
+
+	//FUN_004f3e00 COULD be relevant. it gets the editor of an asset type, so who knows?
+	//ACTUALLY it checks for disableValidation! It must be where editor validation takes place!
+
+
+
+
+	//FUN_004bbf90 seems VERY interesting.
+
+	//TestDetour::attach(Address(0x00575810));
+
+	//TODO: Find a way to make it so that the noun ID used can be customised!
+
 	//TestDetour::attach(Address(0x04e7a00));
+
+	//FUN_005f3760 is related to the file-type of the thingy?
+	//FUN_00575810
 
 	//FUN_00576140
 	//FUN_00407280
