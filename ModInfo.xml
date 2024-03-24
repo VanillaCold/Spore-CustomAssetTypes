@@ -1,0 +1,5 @@
+<mod displayName="Create-a-Type Mod" unique="chocice_assettypeframework" description="A framework for mod developers to add their own custom asset types to Spore." installerSystemVersion="1.0.1.1" hasCustomInstaller="true" dllsBuild="2.5.20">
+	<prerequisite>Spore-CustomAssetTypes.dll</prerequisite>
+	<prerequisite game="GalacticAdventures">Chocice75_CATFilters.package</prerequisite>
+	<component unique="EnableEverywhere" displayName="Enable Category Everywhere" description="Enables the Custom Asset Types category in all areas of the Sporepedia." game="GalacticAdventures">Chocice75_CAT-EnableEverywhere.package</component>
+</mod>
