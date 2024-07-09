@@ -27,3 +27,5 @@ bool assetTypeSharable false
 #It should correspond with the name of the asset browser filter that uses this type.
 #For instance, with TemplateType, the file AssetBrowserFilter!TemplateType.prop corresponds to this asset type.
 uint32 assetTypeSporepediaFilterID hash(TemplateType)
+
+uint32 assetTypeFileType hash(VCL)

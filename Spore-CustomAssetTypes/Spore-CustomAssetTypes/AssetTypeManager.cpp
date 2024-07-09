@@ -205,6 +205,11 @@ static_detour(TypeDetour, int(uint32_t)) //Detour what type the game things your
 		uint32_t tType = type;
 		if (AssetTypeManager::HasAssetType(type))
 		{
+			uint32_t newType;
+			if (App::Property::GetUInt32(AssetTypeManager::GetAssetType(type).get(), id("assetTypeFileType"), newType))
+			{
+				return newType;
+			}
 			tType = AssetTypeManager::GetSourceType(type);
 		}
 		return original_function(tType);
