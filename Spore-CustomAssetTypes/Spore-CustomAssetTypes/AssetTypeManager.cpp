@@ -2,8 +2,9 @@
 #include "AssetTypeManager.h"
 #include <Spore\Hash.h>
 #include <Spore/GeneralAllocator.h>
-
+#include "TESTTHING.h";
 #include <Spore/App/cPropManager.h>
+#include <Spore/Sporepedia/AssetBrowserQuery.h>
 
 
 void AssetTypeManager::AssignTypes(ResourceKey* resourceKeys, size_t arraySize)
@@ -332,6 +333,33 @@ static_detour(TestDetour, bool(int, char))
 
 };*/
 
+member_detour(TesterDetour, TESTTHING, void())
+{
+	void detoured()
+	{
+		original_function(this);
+	}
+};
+
+//FUN_006579f0 detour
+//actually FUN_00654de0
+member_detour(MoreOfATEST, TESTTHING, int(int, int*))//int, char, char, char, char))
+{
+	int detoured(int param_1, int* param_2)
+	{
+		//FUN_0064c850
+		if (param_1 == 0x94174b89)
+		{
+			SporeDebugPrint("%x", param_2);
+			auto b = (Sporepedia::AssetBrowserQuery*)param_2;
+			SporeDebugPrint("%x", b->browserFilterData);
+		}
+		int a = original_function(this, param_1, param_2);
+		//SporeDebugPrint("%x", a);
+		return a;
+	}
+};
+
 void AssetTypeManager::AttachDetours()
 {	
 	PropManagerDetour::attach(GetAddress(App::cPropManager, GetPropertyList));
@@ -350,6 +378,11 @@ void AssetTypeManager::AttachDetours()
 	UpdateDetour::attach(GetAddress(Editors::cEditor, Update));//Address(0x00407280));
 
 	TestDetour::attach(Address(0x004bc360));
+	//TesterDetour::attach(Address(0x0065a030));
+
+	//MoreOfATEST::attach(Address(0x0064c850));
+
+	//FUN_0065a030 is very likely related. Needs to be member detour.
 
 	//FUN_004bc1b0 is odd, with FUN_004bc260 being its direct inverse.
 	//FUN_004bc360 also similar. same with FUN_004bc3d0.

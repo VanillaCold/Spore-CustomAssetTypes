@@ -22,6 +22,9 @@
     <ClInclude Include="AssetTypeManager.h">
       <Filter>Spore-CustomAssetTypes</Filter>
     </ClInclude>
+    <ClInclude Include="TESTTHING.h">
+      <Filter>Spore-CustomAssetTypes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -31,6 +34,9 @@
       <Filter>Internal</Filter>
     </ClCompile>
     <ClCompile Include="AssetTypeManager.cpp">
+      <Filter>Spore-CustomAssetTypes</Filter>
+    </ClCompile>
+    <ClCompile Include="TESTTHING.cpp">
       <Filter>Spore-CustomAssetTypes</Filter>
     </ClCompile>
   </ItemGroup>
